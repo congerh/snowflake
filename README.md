@@ -1,6 +1,6 @@
 # Snowflake
 
-A network service for generating unique ID numbers based on Twitter's [Snowflake](https://github.com/twitter/snowflake)
+A Java program for generating unique ID numbers based on Twitter's [Snowflake](https://github.com/twitter/snowflake)
 
 ## ID is composed of:
 * time - 41 bits (millisecond precision w/ a custom epoch gives us 69 years)
