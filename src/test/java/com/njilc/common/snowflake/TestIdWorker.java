@@ -1,14 +1,14 @@
 package com.njilc.common.snowflake;
 
 import junit.framework.TestCase;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TestIdWorker extends TestCase {
-    private static final Logger log = LogManager.getLogger(TestIdWorker.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestIdWorker.class);
 
     static class IdWorkerThread implements Runnable {
         private Set<Long> set;
@@ -23,9 +23,9 @@ public class TestIdWorker extends TestCase {
         public void run() {
             while (true) {
                 long id = idWorker.nextId();
-                log.info("id: " + id);
+                logger.info("id: {}", id);
                 if (!set.add(id)) {
-                    log.error("duplicate: " + id);
+                    logger.error("duplicate: {}", id);
                 }
             }
         }
@@ -42,7 +42,7 @@ public class TestIdWorker extends TestCase {
         thread1.start();
         thread2.start();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

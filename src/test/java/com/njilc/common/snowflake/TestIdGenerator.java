@@ -1,18 +1,18 @@
 package com.njilc.common.snowflake;
 
 import junit.framework.TestCase;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TestIdGenerator extends TestCase {
-    private static final Logger log = LogManager.getLogger(TestIdGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestIdGenerator.class);
 
     public void testGenerateId() {
         for (int i = 0; i < 10000; i++) {
-            log.info("id: " + IdGenerator.getInstance().generateId());
+            logger.info("id: " + IdGenerator.getInstance().generateId());
         }
     }
 
@@ -27,16 +27,16 @@ public class TestIdGenerator extends TestCase {
         public void run() {
             while (true) {
                 long id = IdGenerator.getInstance().generateId();
-                log.info("id: " + id);
+                logger.info("id: {}", id);
                 if (!set.add(id)) {
-                    log.error("duplicate: " + id);
+                    logger.error("duplicate: {}", id);
                 }
             }
         }
     }
 
     public void testGenerateIdThread() {
-        Set<Long> set = new HashSet<Long>(100000);
+        Set<Long> set = new HashSet<Long>(1000000);
         for (int i = 0; i < 9; i++) {
             Thread thread1 = new Thread(new IdWorkerThread(set));
             thread1.setDaemon(true);

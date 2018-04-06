@@ -1,10 +1,10 @@
 package com.njilc.common.snowflake;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IdWorker {
-    private static final Logger log = LogManager.getFormatterLogger(IdWorker.class);
+    private static final Logger logger = LoggerFactory.getLogger(IdWorker.class);
 
     private final long epoch = 1483228799622L;
 
@@ -37,14 +37,14 @@ public class IdWorker {
         }
         this.workerId = workerId;
         this.datacenterId = datacenterId;
-        log.info("worker starting. timestamp left shift %d, datacenter id bits %d, worker id bits %d, sequence bits %d, workerid %d",
+        logger.info("worker starting. timestamp left shift {}, datacenter id bits {}, worker id bits {}, sequence bits {}, workerid {}",
                 timestampLeftShift, datacenterIdBits, workerIdBits, sequenceBits, workerId);
     }
 
     protected synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
-            log.error("clock is moving backwards.  Rejecting requests until %d.", lastTimestamp);
+            logger.error("clock is moving backwards.  Rejecting requests until {}.", lastTimestamp);
             throw new InvalidSystemClockException(
                     String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds",
                             lastTimestamp - timestamp));
